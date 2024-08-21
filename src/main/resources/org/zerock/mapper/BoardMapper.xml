@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- xml를 활용한 공통코드 -->
+<!-- mapper 인터페이스의 sql 처리용 코드 -->
+<mapper namespace="org.zerock.mapper.BoardMapper"> <!-- 패키지.인터페이스명 -->
+	<select id="getList" resultType="org.zerock.domain.BoardVO"> <!-- id : 메서드명, resultTuype : 객체 -->
+	<![CDATA[
+	select * from tbl_board where bno > 0
+	]]> <!-- CDATA 사용이유는 부등호인지 문자인지를 판단하지 말 것(문자처리) -->
+	</select>
+
+	<insert id="insert">
+	<![CDATA[
+	insert into tbl_board (bno, title, content, writer) values (seq_board.nextval, #{title}, #{content}, #{writer})
+	]]>
+	</insert>
+
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="bno" order="BEFORE"
+			resultType="long">
+			select seq_board.nextval from dual
+		</selectKey> <!--insert 전에 번호를 미리 만들어 놓음 -->
+	<![CDATA[
+	insert into tbl_board (bno, title, content, writer) values (#{bno}, #{title}, #{content}, #{writer})
+	]]>
+	</insert>
+
+	<select id="read" resultType="org.zerock.domain.BoardVO">
+	<![CDATA[
+	select * from tbl_board where bno = #{bno}
+	]]>	<!-- bno와 같은 테이블의 모든 정보를 가져와 객체화 시켜라 -->
+	</select>
+
+	<update id="update">
+	<![CDATA[
+	update tbl_board set title = #{title}, content= #{content}, writer = #{writer}, updateDate = sysdate where bno = #{bno}
+	]]> <!-- 번호를 가지고 해당하는 객체를 수정한다. -->
+	</update>
+	
+	<delete id="delete">
+	<![CDATA[
+	delete from tbl_board where bno = #{bno}
+	]]>
+	</delete> <!-- 번호를 조건으로 레코드를 삭제한다. -->
+
+</mapper>
