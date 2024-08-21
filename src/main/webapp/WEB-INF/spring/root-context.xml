@@ -2,10 +2,38 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 	
+	<!-- hikariCP 커넥션 풀 1단계,2단계 셋팅용 -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+	<!-- log4jdbc를 이용하는 경우 사용안함-> 하단 코드로 변경
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property> 
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:XE"></property>   -->
+		
+		<!--log4jdbc resultset 표형식으로 치환 -->
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property> 
+		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"></property>
+		
+			
+		<property name="username" value="book_ex"></property>
+		<property name="password" value="book_ex"></property>
+	</bean>
+
+	<!-- HikariCP configuration 적용 -->
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
+	</bean>
+	<!-- mybatis를 이용해서 쿼리 처리  -->
+		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"></property>
+		</bean>
+		<!-- mybatis 용으로 검색 적용해 주세요.  -->
+		<mybatis-spring:scan base-package="net.kkwcloud.mapper"/>
+	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	<!-- namespaces 탭에서 context-scan 체크해야 자동완성이 적용됨 -->
-	<context:component-scan base-package="net.kkwcloud.sample"/>
+	<!-- 하단에 있는 네임 스페이스 탭에서 context-scan 체크 자동완성이 됨, 적용 됨-->
+	<context:component-scan base-package="net.kkwcloud.sample"></context:component-scan>
 </beans>
