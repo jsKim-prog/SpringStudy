@@ -32,8 +32,8 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 
+		<!-- Spring-test 코드용(test폴더 활성화) -->
 		<dependency>
-			<!-- Spring-test 코드용(test폴더 활성화) -->
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework-version}</version>
@@ -117,14 +117,14 @@
 		</dependency>
 
 
-		<!-- 커넥션 풀 jdbc https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+		<!-- jdbc 세팅 1. 커넥션 풀 jdbc https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
 			<version>2.7.4</version>
 		</dependency>
 
-		<!--mybatis : sql 매핑용 jdbc-->
+		<!-- jdbc 세팅 2. mybatis : sql 매핑용 jdbc-->
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -132,28 +132,28 @@
 			<version>3.4.6</version>
 		</dependency>
 
-		<!-- mybatis-스프링용 : https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
+		<!-- jdbc 세팅 3.  mybatis-스프링용 : https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
 			<version>1.3.2</version>
 		</dependency>
 
-		<!--트랜잭션용 -->
+		<!-- jdbc 세팅 4. 트랜잭션용 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
 
-		<!-- Spring-jdbc 코드용(test폴더 활성화) -->
+		<!-- Spring-jdbc 코드용(spring에 jdbc 연결용) -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
 
-		<!-- 콘솔 결과를 표 형식으로 보여줌 https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4 -->
+		<!-- jdbc 세팅 4. 콘솔 결과를 표 형식으로 보여줌 https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4 -->
 		<dependency>
 			<groupId>org.bgee.log4jdbc-log4j2</groupId>
 			<artifactId>log4jdbc-log4j2-jdbc4</artifactId>
@@ -168,13 +168,22 @@
 			<version>1</version>
 		</dependency>
 
-		<!-- Servlet -->
+		<!-- Servlet 
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
+			<scope>provided</scope> 
+			</dependency> 3.1.0 버전으로 향상  -->
+
+		<!--Servlet  3.1.0 버전 https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
@@ -214,7 +223,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
+				<version>3.5.1</version> <!-- 2.5.1 버전에서 향상 -->
 				<configuration>
 					<source>11</source> <!-- jdk 11버전으로 향상 -->
 					<target>11</target> <!-- jdk 11버전으로 향상 -->
