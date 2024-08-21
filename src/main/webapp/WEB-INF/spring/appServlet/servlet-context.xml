@@ -21,8 +21,23 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!--commons-fileupload -> 프론트에서 넘어오는 파일에 대한 처리 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!--파일명이 한글일 수 있다. -->
+		<beans:property name="defaultEncoding" value="utf-8"></beans:property>  
+		
+		<!--묶음파일 최대크기 :  1024 * 1024 * 300 bytes 300MB -->
+		<beans:property name="maxUploadSize" value="314572800"></beans:property>
+		
+		<!-- 단일파일 최대크기 : 1024 * 1024 * 100 bytes 100MB -->
+		<beans:property name="maxUploadSizePerFile"	value="104857600"></beans:property>
+		<!-- 업로드 저장경로 : D:\upload\tmp -> maxUploadSize 이상 크기가 넘어오면 임시로 보관-->
+		<beans:property name="uploadTempDir" value="file:/D:/upload/tmp"></beans:property>
+		<!-- 업로드시 버퍼용량 : maxUploadSize 이상되어야 함 -->
+		<beans:property name="maxInMemorySize" value="314572800"></beans:property>
+	</beans:bean>
+	
 	<context:component-scan base-package="net.kkwcloud.www" />
-	
-	
+	<context:component-scan base-package="net.kkwcloud.exception" />
 	
 </beans:beans>
