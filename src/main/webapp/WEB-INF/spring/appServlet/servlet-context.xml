@@ -13,9 +13,10 @@
 	<annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<!--프론트에 http, css, , js, bootstrap 파일을  넣는 곳 -->
 	<resources mapping="/resources/**" location="/resources/" />
 
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<!-- 컨트롤러를 통해 들어오는 url과 jsp를 붙이는 경로 Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
@@ -37,8 +38,7 @@
 		<beans:property name="maxInMemorySize" value="1048575600"></beans:property>
 	</beans:bean>
 	
+	<!-- URL을 통해 프론트를 매핑하는 곳을 지정(scan용 - @Controller) -->
 	<context:component-scan base-package="org.zerock.controller" />
-	
-	
 	
 </beans:beans>
