@@ -1,41 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
-		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-<!-- root-context.xml 에 삽입-->	
-		 
-		<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-	
-		<!--<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property> 
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:XE"></property> -->
-		
-		<!--log4jdbc용으로 콘솔에 표형식으로 출력-->	
-		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property> 
-		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"></property>
-			
-		<property name="username" value="book_ex"></property>
-		<property name="password" value="book_ex"></property>
-		</bean>
-
-		<!--커넥션 풀 설정 HikariCP configuration-->	
-		<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-			<constructor-arg ref="hikariConfig" />
-		</bean>
-		
-		<!-- root-context.xml 코드 변경  -->
-		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-			<property name="dataSource" ref="dataSource"></property>
-		</bean>
-		<!-- mybatis는 pstmt를 사용하지않고 인터페이스+xml로 매핑한다. -->
-	
-		<mybatis-spring:scan base-package="org.zerock.mapper"/> 
-		<!-- 패키지를 통해서 mybatis가 검색한다.  -->
-		<context:component-scan base-package="org.zerock.service"/> <!-- 스프링에서 @Service를 찾는다. -->
 		
 </beans>
