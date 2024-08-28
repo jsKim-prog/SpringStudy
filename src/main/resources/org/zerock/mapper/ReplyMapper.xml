@@ -32,7 +32,15 @@
 <!-- 페이징+bno를 이용한 리스트 출력용 -->
 <select id="getListWithPaging" resultType="org.zerock.domain.ReplyVO">
 	<![CDATA[
-	select rno, bno, reply, replyer, replyDate, updateDate from tbl_reply where bno = #{bno} order by rno asc 
+	select rno, bno, reply, replyer, replyDate, updateDate from 
+	(select /*+INDEX(tbl_reply idx_reply)*/ rownum rn, rno, bno, reply, replyer, replyDate, updateDate from tbl_reply where bno = #{bno} and rno > 0 and rownum <= #{cri.pageNum}*#{cri.amount}) where rn > (#{cri.pageNum}-1)*#{cri.amount} order by rno desc
+	]]>
+</select>
+
+<!-- 댓글 숫자 파악 -->
+<select id="getCountByBno" resultType="int">
+	<![CDATA[
+	select count(*) from tbl_reply where bno = #{bno}
 	]]>
 </select>
 

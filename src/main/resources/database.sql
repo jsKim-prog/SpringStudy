@@ -53,3 +53,6 @@ insert into tbl_reply (rno, bno, reply, replyer) values (seq_reply.nextval, 6, '
 
 select rno, bno, reply, replyer, replyDate, updateDate from tbl_reply where bno = 10 order by rno asc;
 
+select rno, bno, reply, replyer, replyDate, updateDate from 
+	(select /*+INDEX(tbl_reply idx_reply)*/ rownum rn, rno, bno, reply, replyer, replyDate, updateDate from tbl_reply where bno = 11 and rno > 0 and rownum <= 10)
+where rn > 0  order by rno desc;

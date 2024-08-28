@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.Criteria;
+import org.zerock.domain.ReplyPageDTO;
 import org.zerock.domain.ReplyVO;
 import org.zerock.mapper.ReplyMapper;
 
@@ -45,6 +46,12 @@ public class ReplyServiceImpl implements ReplyService{ //ReplyService 의 구현
 	public List<ReplyVO> getList(Criteria cri, Long bno) {
 		log.info("ReplyServiceImpl.getList() 메서드 실행 게시물 번호:"+ bno);
 		return mapper.getListWithPaging(cri, bno);
+	}
+
+	@Override
+	public ReplyPageDTO getListPage(Criteria cri, Long bno) {
+		log.info("ReplyServiceImpl.getListPage() 메서드 실행/게시물 번호:"+ bno);
+		return new ReplyPageDTO(mapper.getCountByBno(bno), mapper.getListWithPaging(cri, bno)) ;
 	}
 
 }

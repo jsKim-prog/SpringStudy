@@ -78,6 +78,14 @@ public class ReplyMapperTests {
 		List<ReplyVO> replies = mapper.getListWithPaging(cri, 10L);
 		replies.forEach(reply -> log.info(reply));
 	}
+	
+	//댓글 리스트 테스트(페이지번호, bno 넘겨 페이지 받기)
+	@Test
+	public void testList2() {
+		Criteria cri = new Criteria(1, 3);
+		List<ReplyVO> replise = mapper.getListWithPaging(cri, 11L);
+		replise.forEach(reply -> log.info(reply));
+	}
 
 
 }

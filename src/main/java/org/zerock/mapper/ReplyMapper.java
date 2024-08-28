@@ -22,5 +22,7 @@ public interface ReplyMapper {
 	public List<ReplyVO> getListWithPaging(@Param("cri") Criteria cri, @Param("bno") Long bno);
 	// (페이징처리 기준점, 게시물의 번호 pk+fk)
 	
+	//댓글 숫자 파악
+	public int getCountByBno(Long bno);
 	
 }

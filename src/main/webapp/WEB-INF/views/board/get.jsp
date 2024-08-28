@@ -1,102 +1,368 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-  pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@include file="../includes/header.jsp"%>
 
 
 <div class="row">
-  <div class="col-lg-12">
-    <h1 class="page-header">Board Read</h1>
-  </div>
-  <!-- /.col-lg-12 -->
+	<div class="col-lg-12">
+		<h1 class="page-header">Board Read</h1>
+	</div>
+	<!-- /.col-lg-12 -->
 </div>
 <!-- /.row -->
 
 <div class="row">
-  <div class="col-lg-12">
-    <div class="panel panel-default">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
 
-      <div class="panel-heading">Board Read Page</div>
-      <!-- /.panel-heading -->
-      <div class="panel-body">
+			<div class="panel-heading">Board Read Page</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
 
-          <div class="form-group">
-          <label>Bno</label> <input class="form-control" name='bno'
-            value='<c:out value="${board.bno }"/>' readonly="readonly">
-        </div>
+				<div class="form-group">
+					<label>Bno</label> <input class="form-control" name='bno'
+						value='<c:out value="${board.bno }"/>' readonly="readonly">
+				</div>
 
-        <div class="form-group">
-          <label>Title</label> <input class="form-control" name='title'
-            value='<c:out value="${board.title }"/>' readonly="readonly">
-        </div>
+				<div class="form-group">
+					<label>Title</label> <input class="form-control" name='title'
+						value='<c:out value="${board.title }"/>' readonly="readonly">
+				</div>
 
-        <div class="form-group">
-          <label>Text area</label>
-          <textarea class="form-control" rows="3" name='content'
-            readonly="readonly"><c:out value="${board.content}" /></textarea>
-        </div>
+				<div class="form-group">
+					<label>Text area</label>
+					<textarea class="form-control" rows="3" name='content'
+						readonly="readonly"><c:out value="${board.content}" /></textarea>
+				</div>
 
-        <div class="form-group">
-          <label>Writer</label> <input class="form-control" name='writer'
-            value='<c:out value="${board.writer }"/>' readonly="readonly">
-        </div>
+				<div class="form-group">
+					<label>Writer</label> <input class="form-control" name='writer'
+						value='<c:out value="${board.writer }"/>' readonly="readonly">
+				</div>
 
-<%-- 		<button data-oper='modify' class="btn btn-default">
+				<%-- 		<button data-oper='modify' class="btn btn-default">
         <a href="/board/modify?bno=<c:out value="${board.bno}"/>">Modify</a></button>
         <button data-oper='list' class="btn btn-info">
         <a href="/board/list">List</a></button> --%>
 
 
-<button data-oper='modify' class="btn btn-default">Modify</button>
-<button data-oper='list' class="btn btn-info">List</button>
+				<button data-oper='modify' class="btn btn-default">Modify</button>
+				<button data-oper='list' class="btn btn-info">List</button>
 
-<%-- <form id='operForm' action="/boad/modify" method="get">
+				<%-- <form id='operForm' action="/boad/modify" method="get">
   <input type='hidden' id='bno' name='bno' value='<c:out value="${board.bno}"/>'>
 </form> --%>
 
 
-<form id='operForm' action="/boad/modify" method="get">
-  <input type='hidden' id='bno' name='bno' value='<c:out value="${board.bno}"/>'>
-  <input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum}"/>'>
-  <input type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
-  <input type='hidden' name='keyword' value='<c:out value="${cri.keyword}"/>'>
-  <input type='hidden' name='type' value='<c:out value="${cri.type}"/>'>  
- 
-</form>
+				<form id='operForm' action="/boad/modify" method="get">
+					<input type='hidden' id='bno' name='bno'
+						value='<c:out value="${board.bno}"/>'> <input
+						type='hidden' name='pageNum'
+						value='<c:out value="${cri.pageNum}"/>'> <input
+						type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
+					<input type='hidden' name='keyword'
+						value='<c:out value="${cri.keyword}"/>'> <input
+						type='hidden' name='type' value='<c:out value="${cri.type}"/>'>
+
+				</form>
 
 
 
-      </div>
-      <!--  end panel-body -->
+			</div>
+			<!--  end panel-body -->
 
-    </div>
-    <!--  end panel-body -->
-  </div>
-  <!-- end panel -->
+		</div>
+		<!--  end panel-body -->
+	</div>
+	<!-- end panel -->
 </div>
 <!-- /.row -->
+<!-- reply 영역 -->
+<div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-comments fa-fw"></i>Reply
+				<button id="addReplyBtn" class="btn btn-primary btn-xs pull-right">댓글
+					작성</button>
+			</div>
+			<!--panel-heading  -->
+			<div class="panel-body">
+				<ul class="chat">
+				</ul>
+			</div><!--panel-body  -->
+			<div class="panel-footer"> <!-- reply paging -->
+			</div><!--.panel-footer  -->
+		</div><!--panel panel-default  -->
+	</div><!-- .col-lg-12 -->
+</div><!--.row  -->
 
+<!-- reply 등록 : Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">Reply MODAL</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label>Reply</label>
+					<input class="form-control" name="reply" value="reply">
+				</div><!-- form-group -->
+				<div class="form-group">
+					<label>Replyer</label>
+					<input class="form-control" name="replyer" value="replyer">
+				</div><!-- form-group -->
+				<div class="form-group">
+					<label>Reply Date</label>
+					<input class="form-control" name="replyDate" value="">
+				</div><!-- form-group -->
+			</div><!--.modal-body  -->
+			<div class="modal-footer">
+				<button id="modalModBtn" type="button" class="btn btn-warning">수정</button>
+				<button id="modalRemoveBtn" type="button" class="btn btn-danger">삭제</button>
+				<button id="modalRegisterBtn" type="button" class="btn btn-primary" >등록</button>
+				<button id="modalCloseBtn" type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<script type="text/javascript" src="/resources/js/reply.js"></script>
+<!-- 외부파일 include용 -->
 <script type="text/javascript">
 $(document).ready(function() {
-  
-  var operForm = $("#operForm"); 
-  
-  $("button[data-oper='modify']").on("click", function(e){
-    
-    operForm.attr("action","/board/modify").submit();
-    
-  });
-  
-    
-  $("button[data-oper='list']").on("click", function(e){
-    
-    operForm.find("#bno").remove();
-    operForm.attr("action","/board/list")
-    operForm.submit();
-    
-  });  
-});
+	var bnoValue = '${board.bno}';
+	var replyUL = $(".chat");
+
+	showList(1);
+
+	function showList(page) {
+	console.log("showList : "+page);
+	replyService.getList({bno : bnoValue, page : page || 1},
+		function(replyCnt, list) {
+			console.log("replyCnt:" + replyCnt);
+			console.log("list:" + list);
+			console.log(list);
+			if(page == -1){
+				pageNum = Math.ceil(replyCnt/10.0);
+				showList(pageNum);
+				return;
+			}
+			
+			var str = "";
+			if (list == null || list.length == 0) {
+					replyUL.html("");
+					return;
+					}
+			for (var i = 0, len = list.length || 0; i < len; i++) {
+				str += "<li class='left clearfix' data-rno='"+list[i].rno+"'>";
+				str += "  <div><div class='header'><strong class='primary-font'>"
+						+ list[i].replyer+ "</strong>";
+				str += "		<small class='pull-right text-muted'>"
+						+ replyService.displayTime(list[i].replyDate)
+						+ "</small></div>";
+				str += "		<p>"+ list[i].reply+ "</p></div></li>";
+			} //--for()
+			replyUL.html(str);
+			showReplyPage(replyCnt);
+		});
+	}//--function showList(page)
+	
+	/* reply용 페이지 번호 출력 */
+	var pageNum = 1;
+	var replyPageFooter = $(".panel-footer");
+	
+	function showReplyPage(replyCnt) {
+		var endNum = Math.ceil(pageNum/10.0)*10;
+		var startNum = endNum -9;
+		var prev = startNum != 1;
+		var next = false;
+		
+		if(endNum*10 >= replyCnt){
+			endNum = Math.ceil(replyCnt/10.0);
+		}
+		if(endNum*10 < replyCnt){
+			next=true;
+		}
+		
+		var str = "<ul class='pagination pull-right'>";
+		if(prev){
+			str += "<li class='page-item'><a class='page-link' href='"+(startNum-1)+"'>Previous</a></li>";
+		}
+		
+		for(var i = startNum; i <= endNum; i++){
+			var active = pageNum == 1 ? "active" : "";
+			str += "<li class='page-item "+active+"'><a class='page-link' href='"+i+"'>"+i+"</a></li>";
+		}
+		
+		if(next){
+			str += "<li class='page-item'><a class='page-link' href='"+(endNum+1)+"'>Next</a></li>";
+		}
+		
+		str += "</ul>";
+		console.log(str);
+		replyPageFooter.html(str);
+		
+	}//--function showReplyPage()
+	
+	replyPageFooter.on("click", "li a", function(e) {
+		e.preventDefault();
+		console.log("page click");
+		var targetPageNum = $(this).attr("href");
+		console.log("targetPageNum:" + targetPageNum);
+		pageNum = targetPageNum;
+		showList(pageNum);
+	});
+	
+	
+	/* modal controll */
+	var modal = $(".modal");
+	var modalInputReply = modal.find("input[name='reply']");
+	var modalInputReplyer = modal.find("input[name='replyer']");
+	var modalInputReplyDate = modal.find("input[name='replyDate']");
+	
+	var modalModBtn = $("#modalModBtn");
+	var modalRemoveBtn = $("#modalRemoveBtn");
+	var modalRegisterBtn = $("#modalRegisterBtn");
+	
+	$("#addReplyBtn").on("click", function(e) {
+		modal.find("input").val("");
+		modalInputReplyDate.closest("div").hide();
+		modal.find("button[id !='modalCloseBtn']").hide();
+		
+		modalRegisterBtn.show();
+		$(".modal").modal("show");
+	});//--function(e)
+
+	/*댓글 등록  */
+	modalRegisterBtn.on("click", function(e) {
+		var reply = {
+				reply: modalInputReply.val(),
+				replyer: modalInputReplyer.val(),
+				bno : bnoValue
+		};
+		replyService.add(reply, function(result) {
+			alert(result);
+			modal.find("input").val("");
+			modal.modal("hide");
+			
+			//showList(1);
+			showList(-1);
+		}); //--replyService.add()
+	}); //--modalRegisterBtn.on()
+	
+	/* 댓글(리스트) 클릭 ->상세댓글 보여주기(get)*/
+	$(".chat").on("click", "li", function(e) {
+		var rno = $(this).data("rno");
+		//console.log(rno);
+		replyService.get(rno, function(reply) {
+			modalInputReply.val(reply.reply);
+			modalInputReplyer.val(reply.replyer);
+			modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly", "readonly");
+			modal.data("rno", reply.rno);
+			
+			modal.find("button[id !='modalCloseBtn']").hide();
+			modalModBtn.show();
+			modalRemoveBtn.show();
+			$(".modal").modal("show");
+		});//--replyService.get()
+	});
+	
+	/* 댓글 수정 - update */
+	modalModBtn.on("click", function(e) {
+		var reply = {rno:modal.data("rno"), reply: modalInputReply.val()};
+		replyService.update(reply, function(result) {
+			alert(result);
+			modal.modal("hide");
+			showList(pageNum);
+		});
+	});//--modalModBtn.on()
+	
+	/*댓글 삭제 -remove */
+	modalRemoveBtn.on("click", function(e) {
+		var rno = modal.data("rno");
+		replyService.remove(rno, function(result) {
+			alert(result);
+			modal.modal("hide");
+			showList(pageNum);
+		});
+	});//--modalRemoveBtn.on()
+});	
+</script>
+
+
+<script type="text/javascript">
+	/*console.log("----------");
+	 console.log("JS List TEST");
+
+	 var bnoValue = '${board.bno}'; //게시물 상세보기에 있는 게시물 번호를 변수에 넣음
+	 1. js 실행 테스트 
+	 replyService.add(
+	 {reply:"자바스크립트 테스트", replyer:"ajax", bno:bnoValue}, //json으로 더미데이터 생성
+	 function(result) {
+	 alert("결과 :"+result);
+	 }
+	 ); */
+
+	/* 2. list 테스트
+	 replyService.getList({bno:bnoValue, page:1}, function(list) {
+	 for(var i = 0, len = list.length||0; i<len; i++){
+	 console.log(list[i]);
+	 }//--for()
+	 });//--function(list)*/
+
+	/* 3. 23번 댓글 삭제 테스트
+	 replyService.remove(23, function(count) {
+	 console.log(count);
+	 if(count==="success"){
+	 alert("삭제완료");
+	 }
+	 }, function(err) {
+	 alert("error.....");
+	
+	 }); */
+
+	/* 3. 37번 댓글 수정 테스트
+	 replyService.update({
+	 rno:37,
+	 bno:bnoValue,
+	 reply:"ajax 댓글수정"
+	 }, function(result) {
+	 alert("수정완료");
+	 }); */
+
+	/*4. get 테스트(10번) 
+	 replyService.get(10, function(data) {
+	 console.log(data);
+	 }); */
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		var operForm = $("#operForm");
+
+		$("button[data-oper='modify']").on("click", function(e) {
+
+			operForm.attr("action", "/board/modify").submit();
+
+		});
+
+		$("button[data-oper='list']").on("click", function(e) {
+
+			operForm.find("#bno").remove();
+			operForm.attr("action", "/board/list")
+			operForm.submit();
+
+		});
+	});
 </script>
 
 

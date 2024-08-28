@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.zerock.domain.Criteria;
+import org.zerock.domain.ReplyPageDTO;
 import org.zerock.domain.ReplyVO;
 //import org.zerock.service.BoardService;
 import org.zerock.service.ReplyService;
@@ -29,9 +30,9 @@ public class ReplyController { //Rest 방식의 컨트롤러로 구현 + Ajax �
 	
 	private ReplyService service;
 	//private BoardService bservice;
-	
+
+	// http://localhost:80/replies/new (json으로 입력되면 객체로 저장된다.)
 	@PostMapping(value = "/new", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE) //입력값은 json으로
-	// http://localhost:80/replies/new
 	public ResponseEntity<String> create(@RequestBody ReplyVO vo){
 		//리턴은 200 | 500 으로 처리된다.
 		log.info("ReplyVO 객체 json 입력값 : " + vo); //파라미터로 넘어온 값 출력테스트
@@ -45,10 +46,12 @@ public class ReplyController { //Rest 방식의 컨트롤러로 구현 + Ajax �
 
 	}
 	
+	
+	//**페이징 기능 추가하여 수정
 	//http://localhost:80/replies/pages/11/1 -> xml
 	//http://localhost:80/replies/pages/11/1.json -> json
 	@GetMapping(value = "/pages/{bno}/{page}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	public ResponseEntity<List<ReplyVO>> getList(@PathVariable("page") int page, @PathVariable("bno") Long bno){
+	public ResponseEntity<ReplyPageDTO> getList(@PathVariable("page") int page, @PathVariable("bno") Long bno){
 		log.info("ReplyController.getList() 메서드 실행. ");
 		log.info("찾을 번호 : " + bno);
 		log.info("페이지 번호 : " + page);
@@ -59,7 +62,7 @@ public class ReplyController { //Rest 방식의 컨트롤러로 구현 + Ajax �
 		Criteria cri = new Criteria(page, 10); //현재 페이지와 리스트 개수를 전달
 		log.info("페이지 Criteria : " + cri);
 		
-		return new ResponseEntity<>(service.getList(cri, bno), HttpStatus.OK); //200 정상
+		return new ResponseEntity<>(service.getListPage(cri, bno), HttpStatus.OK); //200 정상
 	}
 	
 	//http://localhost:80/replies/4 -> xml
@@ -87,6 +90,8 @@ public class ReplyController { //Rest 방식의 컨트롤러로 구현 + Ajax �
 	}
 	
 	//http://localhost:80/replies/5
+	//RequestMethod.PUT -> @PutMapping : 객체의 전체 필드 수정
+	//RequestMethod.PATCH -> @PatchMaping : 객체의 일부 필드(부분) 수정
 	@RequestMapping(method = {RequestMethod.PUT, RequestMethod.PATCH}, value = "/{rno}", consumes = "application/json", produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> modify(@RequestBody ReplyVO vo, @PathVariable("rno") Long rno){
 		//(이미 폼(form)에 있는 값, 수정할 번호)
@@ -99,5 +104,7 @@ public class ReplyController { //Rest 방식의 컨트롤러로 구현 + Ajax �
 				new ResponseEntity<>("success", HttpStatus.OK) //200 정상
 				:new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); //500 서버오류
 	}
+	
+	
 
 }
