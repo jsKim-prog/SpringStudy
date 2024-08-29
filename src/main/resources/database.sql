@@ -56,3 +56,10 @@ select rno, bno, reply, replyer, replyDate, updateDate from tbl_reply where bno 
 select rno, bno, reply, replyer, replyDate, updateDate from 
 	(select /*+INDEX(tbl_reply idx_reply)*/ rownum rn, rno, bno, reply, replyer, replyDate, updateDate from tbl_reply where bno = 11 and rno > 0 and rownum <= 10)
 where rn > 0  order by rno desc;
+
+
+---- 댓글 수 처리
+alter table TBL_BOARD add (replyCnt number default 0); --replyCnt 컬럼 추가
+
+update TBL_BOARD set replyCnt = (select count(rno) from TBL_REPLY where TBL_REPLY.bno = TBL_BOARD.bno);
+

@@ -37,10 +37,8 @@
 					<c:forEach items="${list}" var="board">
 						<tr>
 							<td><c:out value="${board.bno}" /></td>
-							<%-- <td><a href='/board/get?bno=<c:out value="${board.bno}"/>'><c:out value="${board.title}"/></a></td> --%>
-
 							<td><a class='move' href='<c:out value="${board.bno}"/>'>
-									<c:out value="${board.title}" />
+									<c:out value="${board.title}" /> <b>[${board.replyCnt}]</b>
 							</a></td>
 
 							<td><c:out value="${board.writer}" /></td>
