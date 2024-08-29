@@ -8,16 +8,19 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 import lombok.Setter;
 
-@Component // spring이 관리하게 한다. -> 필수 : root-context.xml의 component-scan에 패키지 추가
-@Data //lombok이 dto처럼 관리
+@Component 		// 스프링이 관리해 주세요 -> 필수 : root-context.xml 에 context:component-scan 패키지 추가
+@Data			// lombok이 dto처럼 관리해 주세요
 public class Restaurant {
-	//필드
-	@Setter(onMethod_ = @Autowired) //자동으로 setChef() 를 컴파일시 생성한다.
-	private Chef chef; //setChef(Chef)
-	private String restaurantName;
-	private Date openTime;
-	private Date closeTime;
-	//생성자
+
+	// 필드
+	@Setter(onMethod_ = @Autowired) // 자동으로 setChef()를 컴파일 시 생성한다.
+	private Chef chef ;				// setChef(Chef)
+	private String restaurntName ; 
+	private Date openTime ;
+	private Date closeTime ;
 	
-	//메서드
+	// 생성자
+	
+	
+	// 메서드
 }
