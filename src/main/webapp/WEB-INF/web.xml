@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee                       http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+<web-app version="4.0" id="WepAppID"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee  
+http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+<!-- 파일업로드 위한 변경 -->
 
 	<!-- The definition of the Root Spring Container shared by all Servlets 
 		and Filters -->
@@ -22,24 +27,22 @@
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		
+		<!-- 파일업로드 설정 -->
+	<multipart-config>
+		<location>D:\\upload\\tmp</location> <!-- 파일저장공간 -->
+		<max-file-size>20971520</max-file-size> <!-- 20MB : 업로드되는 파일 최대크기-->
+		<max-request-size>41943040</max-request-size> <!-- 40MB : 한번에 올릴 수 있는 최대크기-->
+		<file-size-threshold>20971520</file-size-threshold> <!-- 20MB : 특정사이즈의 메모리 사용-->
+	</multipart-config>
+	
 	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	<filter>
-		<filter-name>encoding</filter-name>
-		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-		<init-param>
-			<param-name>encoding</param-name>
-			<param-value>UTF-8</param-value>
-		</init-param>
-	</filter>
-
-	<filter-mapping>
-		<filter-name>encoding</filter-name>
-		<servlet-name>appServlet</servlet-name>
-	</filter-mapping>
+	
+	
 
 </web-app>
